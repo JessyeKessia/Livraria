@@ -16,7 +16,7 @@ conexao.once("open", () => {
 const app = express();
 app.use(express.json());
 
-
+// rota home
 app.get("/", (req, res) => {
     res.status(200).send("livraria");
 })
@@ -25,11 +25,6 @@ app.get("/", (req, res) => {
 app.get("/livros/:id", (req, res) => {
     const index = buscaLivro(req.params.id);
     res.status(200).json(livros[index])
-})
-
-app.get("/livros", async (req, res) => {
-    const listaLivros = await livro.find({});
-    res.status(200).json(listaLivros);
 })
 
 app.post("/livros", (req, res) => {

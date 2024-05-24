@@ -1,3 +1,4 @@
+// Os models são responsáveis pela representação dos dados e da lógica de negócio da aplicação, ou seja, é responsabilidade do model gerenciar o relacionamento entre a API e a camada de dados, incluindo validação, armazenamento e manipulação dos dados, interação com a base de dados e suas regras.
 import mongoose from "mongoose";
 
 const livroSchema = new mongoose.Schema({
