@@ -34,6 +34,7 @@ class LivroController {
         try {
             const id = req.params.id;
             const livroEncontrado = await livro.findById(id);
+            res
                 .status(200)
                 .json(livroEncontrado);
         } catch(erro) {
