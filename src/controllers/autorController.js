@@ -1,5 +1,6 @@
 // Serve para fazer o controle dos métodos
 // Os controllers atuam como intermediários entre a camada responsável pelo recebimento dos inputs de dados, que em nossa API está sendo feito através das rotas, e os models. Controllers também são a camada responsável pelo “caminho inverso”, pegando o resultado do processamento feito pelos models e “repassando” de volta.
+import NaoEncontrado from "../erros/NaoEncontrado.js";
 import { autor } from "../models/Autor.js"
 
 class AutorController {
@@ -35,9 +36,7 @@ class AutorController {
                     .status(200)
                     .json(autorEncontrado);
             } else {
-                res
-                    .status(404)
-                    .json({mensage: "Id do Autor não localizado."});
+               next(new NaoEncontrado("Id do Autor não localizado"));
             }
         } catch(erro) {
             next(erro);
