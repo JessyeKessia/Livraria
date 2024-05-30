@@ -4,7 +4,7 @@ import { autor } from "../models/Autor.js"
 
 class AutorController {
     // static é usado para pegar metodos de uma classe sem chamá-la.
-    static async listarAutores(req, res) {
+    static async listarAutores(req, res, next) {
         try {
             // controller chama o model Livro com o find({})
             const autoresLivros = await autor.find({});
@@ -12,12 +12,10 @@ class AutorController {
                 .status(200)
                 .json(autoresLivros);
         } catch(erro) {
-            res
-                .status(500)
-                .json({mensage: `${erro.message} - falha na requisição`});
+            next(erro);
         }
     };
-    static async cadastarAutor(req, res) {
+    static async cadastarAutor(req, res, next) {
         try {
             // controller chama o model Livro 
         const novoAutor = await autor.create(req.body)
@@ -25,25 +23,27 @@ class AutorController {
             .status(201)
             .json({message: `Autor criado com sucesso`})
         } catch(erro) {
-            res
-                .status(500)
-                .json({mensage: `${erro.message} - falha ao cadastrar livro`})
-        }
+            next(erro);
+        };
     }
-    static async buscarAutorPorId(req, res) {
+    static async buscarAutorPorId(req, res, next) {
         try {
             const id = req.params.id;
-            const AutorEncontrado = await autor.findById(id);
-            res
-                .status(200)
-                .json(AutorEncontrado);
+            const autorEncontrado = await autor.findById(id);
+            if (autorEncontrado !== null) {
+                res
+                    .status(200)
+                    .json(autorEncontrado);
+            } else {
+                res
+                    .status(404)
+                    .json({mensage: "Id do Autor não localizado."});
+            }
         } catch(erro) {
-            res
-                .status(500)
-                .json({mensage: `${erro.message} - falha na requisição do autor`});
-        }
+            next(erro);
+        };
     };
-    static async atualizarAutor(req, res) {
+    static async atualizarAutor(req, res, next) {
         try {
             const id = req.params.id;
             await autor.findByIdAndUpdate(id, req.body);
@@ -51,9 +51,7 @@ class AutorController {
                 .status(200)
                 .json({menssagem: "Autor atualizado"});
         } catch(erro) {
-            res
-                .status(500)
-                .json({mensage: `${erro.message} - falha na atualização do autor`});
+            next(erro);
         }
     };
     static async deletarAutor(req, res) {
@@ -64,9 +62,7 @@ class AutorController {
                 .status(200)
                 .json({menssagem: "Autor removido com sucesso"});
         } catch(erro) {
-            res
-                .status(500)
-                .json({mensage: `${erro.message} - falha na deleção do autor`});
+           next(erro);
         }
     };
 
